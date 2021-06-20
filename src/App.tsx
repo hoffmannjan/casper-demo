@@ -1,7 +1,8 @@
-import * as React from "react"
+import React, { useEffect, useState }  from "react"
 import {
   ChakraProvider,
   Box,
+  Center,
   Text,
   Link,
   VStack,
@@ -9,30 +10,41 @@ import {
   Grid,
   theme,
 } from "@chakra-ui/react"
-import { ColorModeSwitcher } from "./ColorModeSwitcher"
-import { Logo } from "./Logo"
 
-export const App = () => (
-  <ChakraProvider theme={theme}>
-    <Box textAlign="center" fontSize="xl">
-      <Grid minH="100vh" p={3}>
-        <ColorModeSwitcher justifySelf="flex-end" />
-        <VStack spacing={8}>
-          <Logo h="40vmin" pointerEvents="none" />
-          <Text>
-            Edit <Code fontSize="xl">src/App.tsx</Code> and save to reload.
-          </Text>
-          <Link
-            color="teal.500"
-            href="https://chakra-ui.com"
-            fontSize="2xl"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn Chakra
-          </Link>
-        </VStack>
-      </Grid>
-    </Box>
-  </ChakraProvider>
-)
+import { STATUS_API } from "./constants";
+import { ColorModeSwitcher } from "./components/color-mode-switcher"
+import { SendTransferView } from "./views/send-transfer";
+import { getActivePublicKey } from "./service/casper";
+
+export const CasperApp = () => { 
+  const [activePublicKey, setActivePublicKey] = useState("");
+  const [networkName, setNetworkName] = useState("");
+
+  useEffect(() => {
+    const pkSet = async () => {
+      const pk = await getActivePublicKey().catch(() => alert("Please install Signer and make sure the site is connected and there is an active key"));
+      setActivePublicKey(pk);
+    };
+
+    const networkNameSet = async () => {
+      const statusResponse = await fetch(STATUS_API);
+      const json = await statusResponse.json();
+      setNetworkName(json.chainspec_name);
+    };
+
+    pkSet();
+    networkNameSet();
+  }, []);
+
+  return (
+    <ChakraProvider theme={theme}>
+      <Box textAlign="center" fontSize="xl">
+        <Grid minH="100vh" p={3}>
+          <ColorModeSwitcher justifySelf="flex-end" />
+          <SendTransferView activePublicKey={activePublicKey} networkName={networkName} />
+        </Grid>
+      </Box>
+    </ChakraProvider>
+  )
+}
+
