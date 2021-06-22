@@ -4,15 +4,12 @@ import {
   Box,
   Flex,
   Text,
-  Link,
   FormControl,
   FormLabel,
   InputGroup,
   Input,
   InputRightAddon,
   VStack,
-  Code,
-  Grid,
   Button,
   useDisclosure
 } from "@chakra-ui/react"

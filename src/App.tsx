@@ -2,11 +2,6 @@ import React, { useEffect, useState }  from "react"
 import {
   ChakraProvider,
   Box,
-  Center,
-  Text,
-  Link,
-  VStack,
-  Code,
   Grid,
   extendTheme,
 } from "@chakra-ui/react"

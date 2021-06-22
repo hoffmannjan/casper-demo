@@ -1,5 +1,4 @@
 import { CasperClient, CLPublicKey, DeployUtil, Signer } from "casper-js-sdk";
-import { BigNumber } from "@ethersproject/bignumber";
 
 import { NATIVE_TRANSFER_PAYMENT_AMOUNT, RPC_API } from "../constants";
 
@@ -9,24 +8,21 @@ export const buildTransferDeploy = ({ networkName, fromAddrHex, toAddrHex, amoun
     fromAddrHex: string, // hex representation of senders public key
     toAddrHex: string, // hex representation of receivers public key
     amount: string, // amount of the transfer
-    id: string,  // transfer-id which is U64 internaly 
+    id: string,  // id to tag the transaction and to correlate it to your back-end storage
     ttl: number // time to live. default value is  30min
   } ) => {
-  // transfer_id field in the request to tag the transaction and to correlate it to your back-end storage
-  const transferId = parseInt(id);
-
   // create public keys from account-address (in fact it is hex representation of public-key with added prefix)
   const fromPublicKey = CLPublicKey.fromHex(fromAddrHex);
   const toPublicKey = CLPublicKey.fromHex(toAddrHex);
 
-  // header creation
+  // header
   const deployParams = new DeployUtil.DeployParams(
     fromPublicKey,
     networkName,
     ttl
   );
 
-  // session creation
+  // session
   const session = DeployUtil.ExecutableDeployItem.newTransfer(
     amount,
     toPublicKey,
@@ -47,7 +43,10 @@ export const buildTransferDeploy = ({ networkName, fromAddrHex, toAddrHex, amoun
 export const getActivePublicKey = async () => await Signer.getActivePublicKey()
 
 export const sendTransferDeploy = (deployJson) => {
+  // reconstructs deploy from JSON
   const deploy = DeployUtil.deployFromJson(deployJson);
+  // init of client 
   const client = new CasperClient(RPC_API);
+  // putDeploy call which return deploy hash if succeded
   return client.putDeploy(deploy);
 };

@@ -1,4 +1,4 @@
-import React, { useEffect, useState }  from "react"
+import React from "react"
 import ReactJson from 'react-json-view'
 import {
   Modal,
@@ -8,8 +8,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
-  Code
+  Button
 } from "@chakra-ui/react"
 
 export const ModalJSON = ({ isOpen, onClose, json}) => {
