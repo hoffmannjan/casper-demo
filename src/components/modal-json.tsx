@@ -20,7 +20,7 @@ export const ModalJSON = ({ isOpen, onClose, json}) => {
         <ModalHeader>Deploy JSON</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
-          <ReactJson theme="ocean" src={json} collapseStringsAfterLength={5} />
+          <ReactJson theme="ocean" src={json}  />
         </ModalBody>
         <ModalFooter>
           <Button colorScheme="blue" mr={3} onClick={onClose}>

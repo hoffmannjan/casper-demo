@@ -8,13 +8,18 @@ import {
   VStack,
   Code,
   Grid,
-  theme,
+  extendTheme,
 } from "@chakra-ui/react"
 
 import { STATUS_API } from "./constants";
 import { ColorModeSwitcher } from "./components/color-mode-switcher"
 import { SendTransferView } from "./views/send-transfer";
 import { getActivePublicKey } from "./service/casper";
+
+const config = {
+  initialColorMode: "dark",
+  useSystemColorMode: false,
+};
 
 export const CasperApp = () => { 
   const [activePublicKey, setActivePublicKey] = useState("");
@@ -37,7 +42,7 @@ export const CasperApp = () => {
   }, []);
 
   return (
-    <ChakraProvider theme={theme}>
+    <ChakraProvider theme={extendTheme({ config })}>
       <Box textAlign="center" fontSize="xl">
         <Grid minH="100vh" p={3}>
           <ColorModeSwitcher justifySelf="flex-end" />

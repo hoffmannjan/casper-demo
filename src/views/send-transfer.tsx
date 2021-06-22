@@ -21,16 +21,16 @@ import { ModalJSON } from "../components/modal-json";
 import { buildTransferDeploy, sendTransferDeploy } from "../service/casper";
 
 export const SendTransferView = ({ activePublicKey, networkName }) => {
-  const [toAddress, setToAddress] = useState("02028b2ddbe59976ad2f4138ca46553866de5124d13db4e13611ca751eedde9e0297");
-  const [transferAmount, setTransferAmount] = useState("25000000");
-  const [transferId, setTransferId] = useState("11");
+  const [toAddress, setToAddress] = useState("");
+  const [transferAmount, setTransferAmount] = useState("");
+  const [transferId, setTransferId] = useState("");
   const [signedDeploy, setSignedDeploy] = useState(null);
   const [deployHash, setDeployHash] = useState(null);
 
   const { isOpen, onOpen, onClose } = useDisclosure()
 
   const signDeploy = async () => {
-    const deployJSON = buildTransferDeploy({ networkName, from: activePublicKey, to: toAddress, amount: transferAmount, id: transferId });
+    const deployJSON = buildTransferDeploy({ networkName, fromAddrHex: activePublicKey, toAddrHex: toAddress, amount: transferAmount, id: transferId });
     const signedDeploy = await Signer.sign(deployJSON, activePublicKey, toAddress);
     setSignedDeploy(signedDeploy);
   };
