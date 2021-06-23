@@ -4,11 +4,11 @@ import { NATIVE_TRANSFER_PAYMENT_AMOUNT, RPC_API } from "../constants";
 
 export const buildTransferDeploy = ({ networkName, fromAddrHex, toAddrHex, amount, id, ttl = 1800000 }:
   {
-    networkName: string, // obtained from chainspec
-    fromAddrHex: string, // hex representation of senders public key
-    toAddrHex: string, // hex representation of receivers public key
-    amount: string, // amount of the transfer
-    id: string,  // id to tag the transaction and to correlate it to your back-end storage
+    networkName: string, // obtained from chainspec 
+    fromAddrHex: string, // hex representation of senders public key (obtained from Signer)
+    toAddrHex: string, // hex representation of receivers public key (from the form)
+    amount: string, // amount of the transfer (from the form)
+    id: string,  // id to tag the transaction and to correlate it to your back-end storage (from the form)
     ttl: number // time to live. default value is  30min
   } ) => {
   // create public keys from account-address (in fact it is hex representation of public-key with added prefix)
@@ -26,7 +26,7 @@ export const buildTransferDeploy = ({ networkName, fromAddrHex, toAddrHex, amoun
   const session = DeployUtil.ExecutableDeployItem.newTransfer(
     amount,
     toPublicKey,
-    null,
+    null, // optional: sourcePurse
     id
   );
 
